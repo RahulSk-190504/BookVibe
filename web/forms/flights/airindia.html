@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Air India – Seat Selection</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: url("../plane-bg.jpg") no-repeat center center fixed;
+      background-size: cover;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 40px auto;
+      background: rgba(255,255,255,0.95);
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.3);
+    }
+
+    h1 {
+      text-align: center;
+      color: #0a3d62;
+    }
+
+    .plane {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: 20px 0;
+    }
+
+    .row {
+      display: flex;
+      justify-content: center;
+      margin: 8px 0;
+    }
+
+    .seat {
+      width: 40px;
+      height: 40px;
+      margin: 0 5px;
+      background: #dfe6e9;
+      border-radius: 6px;
+      text-align: center;
+      line-height: 40px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .seat:hover {
+      transform: scale(1.1);
+      background: #b2bec3;
+    }
+
+    .seat.selected {
+      background: #27ae60;
+      color: #fff;
+      font-weight: bold;
+    }
+
+    .seat.occupied {
+      background: #636e72;
+      cursor: not-allowed;
+    }
+
+    .aisle {
+      width: 40px;
+    }
+
+    .legend {
+      display: flex;
+      justify-content: center;
+      margin: 20px 0;
+    }
+
+    .legend div {
+      display: flex;
+      align-items: center;
+      margin: 0 15px;
+    }
+
+    .legend span {
+      width: 20px;
+      height: 20px;
+      display: inline-block;
+      margin-right: 8px;
+      border-radius: 4px;
+    }
+
+    .btn {
+      display: block;
+      margin: 20px auto;
+      padding: 12px 20px;
+      background: #0a3d62;
+      color: #fff;
+      border-radius: 6px;
+      border: none;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .btn:hover {
+      background: #1e5c90;
+    }
+
+    .form-section {
+      display: none;
+      margin-top: 20px;
+    }
+
+    .form-section input {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Air India – Seat Selection</h1>
+
+    <div class="plane" id="plane"></div>
+
+    <div class="legend">
+      <div><span style="background:#dfe6e9"></span>Available</div>
+      <div><span style="background:#27ae60"></span>Selected</div>
+      <div><span style="background:#636e72"></span>Occupied</div>
+    </div>
+
+    <button class="btn" onclick="showForm()">Continue</button>
+
+    <div class="form-section" id="passengerForm">
+      <h2>Passenger Details</h2>
+      <form>
+        <label>Full Name</label>
+        <input type="text" required>
+        <label>Email</label>
+        <input type="email" required>
+        <label>Phone</label>
+        <input type="text" required>
+        <label>Seats Selected</label>
+        <input type="text" id="selectedSeats" readonly>
+        <button type="submit" class="btn">Book Now</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    const plane = document.getElementById("plane");
+    const selectedSeats = [];
+    const occupiedSeats = ["2B", "3C", "5D"]; // Example occupied
+
+    const rows = 10;
+    const seatsPerSide = 3; // 3 left + aisle + 3 right
+
+    for (let r = 1; r <= rows; r++) {
+      const row = document.createElement("div");
+      row.classList.add("row");
+
+      // Left side seats
+      for (let c = 0; c < seatsPerSide; c++) {
+        const seatId = r + String.fromCharCode(65 + c); // 1A, 1B...
+        row.appendChild(createSeat(seatId));
+      }
+
+      // Aisle
+      const aisle = document.createElement("div");
+      aisle.classList.add("aisle");
+      row.appendChild(aisle);
+
+      // Right side seats
+      for (let c = 0; c < seatsPerSide; c++) {
+        const seatId = r + String.fromCharCode(68 + c); // skip to D, E, F
+        row.appendChild(createSeat(seatId));
+      }
+
+      plane.appendChild(row);
+    }
+
+    function createSeat(seatId) {
+      const seat = document.createElement("div");
+      seat.classList.add("seat");
+      seat.textContent = seatId;
+
+      if (occupiedSeats.includes(seatId)) {
+        seat.classList.add("occupied");
+      }
+
+      seat.addEventListener("click", () => {
+        if (!seat.classList.contains("occupied")) {
+          seat.classList.toggle("selected");
+
+          if (selectedSeats.includes(seatId)) {
+            selectedSeats.splice(selectedSeats.indexOf(seatId), 1);
+          } else {
+            selectedSeats.push(seatId);
+          }
+        }
+      });
+
+      return seat;
+    }
+
+    function showForm() {
+      if (selectedSeats.length === 0) {
+        alert("Please select at least one seat.");
+        return;
+      }
+      document.getElementById("passengerForm").style.display = "block";
+      document.getElementById("selectedSeats").value = selectedSeats.join(", ");
+      window.scrollTo(0, document.body.scrollHeight);
+    }
+  </script>
+</body>
+</html>
