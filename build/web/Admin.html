@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Panel</title>
+  <link rel="stylesheet" href="Admin.css">
+</head>
+<body>
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <h2>Admin Panel</h2>
+    <ul>
+      <li><a href="Admin.html" class="active">Dashboard</a></li>
+      <li><a href="#flights">Flights</a></li>
+      <li><a href="#buses">Buses</a></li>
+      <li><a href="#">Hotels</a></li>
+      <li><a href="#">Packages</a></li>
+      <!-- Jump to Users section -->
+      <li><a href="#users">Users</a></li>
+      <li><a href="#">Commission</a></li>
+     <li><a href="ViewBooking.html" target="_blank">View All Bookings</a></li>
+
+
+    </ul>
+  </div>
+
+  <!-- Topbar -->
+  <div class="topbar">
+    <h1>Dashboard Overview</h1>
+    <div class="user-info">
+      <div class="admin-badge">Administrator</div>
+      <a href="AdminLogout">Logout</a>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <div class="dashboard-row">
+      <div class="card"><h3>Flights</h3><p>16</p></div>
+      <div class="card"><h3>Buses</h3><p>9</p></div>
+      <div class="card"><h3>Hotels</h3><p>21</p></div>
+      <div class="card"><h3>Packages</h3><p>13</p></div>
+    </div>
+
+    <!-- Users Section -->
+    <div id="users" class="user-section">
+      <h2>Registered Users</h2>
+      <!-- Load Users Table from Servlet inside iframe -->
+      <iframe src="Adminuser"></iframe>
+    </div>
+  </div>
+  <!-- Flights Section -->
+<div id="flights" class="user-section">
+  <h2>Manage Flights</h2>
+  <iframe src="FlightAdmin" style="width:100%; min-height:450px; border:none;"></iframe>
+</div>
+  
+  <!-- Buses Section -->
+<div id="buses" class="user-section">
+  <h2>Manage Buses</h2>
+  <iframe src="BusAdmin" style="width:100%; min-height:450px; border:none;"></iframe>
+</div>
+  <!-- View Bookings Section -->
+<div id="bookings" class="user-section">
+  <h2>All Flight Bookings</h2>
+  <iframe src="ViewBookings.jsp" style="width:100%; min-height:450px; border:none;"></iframe>
+</div>
+
+
+
+
+  <script>
+    // Simple JavaScript for active link highlighting
+    document.addEventListener('DOMContentLoaded', function() {
+      const links = document.querySelectorAll('.sidebar a');
+      
+      links.forEach(link => {
+        link.addEventListener('click', function() {
+          links.forEach(l => l.classList.remove('active'));
+          this.classList.add('active');
+        });
+      });
+    });
+  </script>
+</body>
+</html>
